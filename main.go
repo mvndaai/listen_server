@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 func main() {
@@ -17,6 +18,7 @@ type printable struct {
 	Method  string      `json:"method"`
 	Body    string      `json:"body,omitempty"`
 	Headers http.Header `json:"headers,omitempty"`
+	Query   url.Values  `json:"query,omitempty"`
 }
 
 func handler(w http.ResponseWriter, req *http.Request) {
@@ -24,6 +26,7 @@ func handler(w http.ResponseWriter, req *http.Request) {
 		Path:    req.URL.Path,
 		Method:  req.Method,
 		Headers: req.Header,
+		Query:   req.URL.Query(),
 	}
 
 	body, err := io.ReadAll(req.Body)
