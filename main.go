@@ -6,11 +6,17 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 func main() {
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(":8888", nil)
+	port := ":8888"
+	if v := os.Getenv("PORT"); v != "" {
+		port = ":" + v
+	}
+	fmt.Println("Starting service on port", port)
+	http.ListenAndServe(port, nil)
 }
 
 type printable struct {
